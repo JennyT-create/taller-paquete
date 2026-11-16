@@ -1,0 +1,54 @@
+[project]
+name = "hotel-booking"
+dynamic = ["version"]
+description = "Taller T03 del programa MLOps: del notebook al paquete"
+requires-python = ">=3.12, <3.13"
+dependencies = [
+    "pandas==2.3.0",
+    "pydantic==2.11.7",
+    "pyyaml==6.0.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit>=4.1.0, <5",
+    "pytest>=8.3.4, <9",
+    "ruff==0.15.1",
+]
+
+[build-system]
+requires = ["setuptools>=72.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["hotel_booking*"]
+
+[tool.setuptools.dynamic]
+version = { file = "version.txt" }
+
+[tool.ruff]
+line-length = 90
+
+[tool.ruff.lint]
+select = [
+    "F",    # pyflakes: errores reales (variables sin usar, nombres que no existen)
+    "E",    # pycodestyle: errores de estilo
+    "W",    # pycodestyle: advertencias de estilo
+    "B",    # flake8-bugbear: patrones que suelen esconder bugs
+    "I",    # isort: orden de los imports
+    "UP",   # pyupgrade: sintaxis moderna de Python
+    "SIM",  # flake8-simplify: código que se puede simplificar
+    "C",    # convenciones y complejidad
+    "ANN",  # flake8-annotations: tipos en las funciones
+]
+ignore = [
+    "C901", # función demasiado compleja
+]
+
+[tool.ruff.format]
+indent-style = "space"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
