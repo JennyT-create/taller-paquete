@@ -1,0 +1,19 @@
+# Entorno virtual y cachés
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+
+# Lo que genera uv build
+dist/
+build/
+*.egg-info/
+
+# Datos: nunca van a Git
+data/
+*.csv
+*.parquet
+
+# Varios
+.databricks/
+.DS_Store
