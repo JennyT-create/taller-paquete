@@ -1,0 +1,29 @@
+# Revisión automática: corre en cada pull request.
+# Hace lo mismo que el notebook revisar.py, pero en una máquina de GitHub,
+# así que nadie puede saltársela. En T09 la convertimos en CI/CD completo.
+name: Revisión automática
+
+on:
+  pull_request:
+
+jobs:
+  revision:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Traer el código
+        uses: actions/checkout@v4
+
+      - name: Instalar uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Crear el entorno con las versiones de uv.lock
+        run: uv sync --extra dev --locked
+
+      - name: Pruebas
+        run: uv run pytest
+
+      - name: Formato (ruff format)
+        run: uv run ruff format --check .
+
+      - name: Reglas (ruff check)
+        run: uv run ruff check .
