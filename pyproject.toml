@@ -56,3 +56,14 @@ indent-style = "space"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+
+# Los paquetes vienen de PyPI, quien sea que corra uv: GitHub, la terminal web o el
+# propio Databricks (que si no, usa su servidor interno y reescribe uv.lock).
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.org/simple"
+default = true
+
+# La versión del entorno serverless que usa Databricks para esta carpeta Git.
+[tool.databricks.environment]
+environment_version = "6"
