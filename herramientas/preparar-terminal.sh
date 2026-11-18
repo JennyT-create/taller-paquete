@@ -1,21 +1,36 @@
-#!/usr/bin/env bash
 # Prepara la terminal web de Databricks para trabajar con uv, pytest y ruff.
 #
-# Córrelo una sola vez, desde la carpeta del repositorio:
-#     bash herramientas/preparar-terminal.sh
+# Córrelo una sola vez, desde la raíz del repositorio y con source (no con bash):
+#     source herramientas/preparar-terminal.sh
 #
-# Escribe un bloque en el .bashrc de tu carpeta de usuario del workspace.
-# Databricks lee ese archivo cada vez que abres una terminal, así que después
-# solo tienes que escribir: uv sync --extra dev, uv run pytest, uv run ruff check .
-set -euo pipefail
+# Escribe un bloque en el .bashrc de tu carpeta de usuario del workspace, que Databricks
+# lee cada vez que abre una terminal nueva, y lo carga también en la terminal donde
+# estás: no hace falta cerrarla ni abrir otra.
+#
+# Con source, el script corre dentro de tu terminal. Por eso todo va en una función que
+# devuelve un error en vez de salir: si algo falla, tu terminal sigue abierta.
 
-usuario=$(databricks current-user me --output json |
-    python3 -c 'import json, sys; print(json.load(sys.stdin)["userName"])')
-destino="/Workspace/Users/${usuario}/.bashrc"
-inicio="# >>> taller MLOps >>>"
-fin="# <<< taller MLOps <<<"
+if ! (return 0 2>/dev/null); then
+    echo "Córrelo con source, no con bash:"
+    echo "    source herramientas/preparar-terminal.sh"
+    exit 1
+fi
 
-read -r -d '' bloque <<'BLOQUE' || true
+_preparar_terminal() {
+    local usuario destino bloque
+    local inicio="# >>> taller MLOps >>>"
+    local fin="# <<< taller MLOps <<<"
+
+    # Tu usuario se lo preguntamos a Databricks: así nadie escribe su correo.
+    usuario=$(databricks current-user me --output json 2>/dev/null |
+        python3 -c 'import json, sys; print(json.load(sys.stdin)["userName"])' 2>/dev/null)
+    if [ -z "$usuario" ]; then
+        echo "No pude saber tu usuario de Databricks. ¿Estás en la terminal web de Databricks?"
+        return 1
+    fi
+    destino="/Workspace/Users/${usuario}/.bashrc"
+
+    read -r -d '' bloque <<'BLOQUE'
 # Lo escribió herramientas/preparar-terminal.sh. Para actualizarlo, vuelve a correrlo.
 
 # Las carpetas Git no permiten crear __pycache__ ni cachés: que nadie lo intente.
@@ -35,19 +50,24 @@ if ! command -v uv >/dev/null 2>&1; then
     (cd /tmp && pip install --quiet uv)
 fi
 
-# Cada proyecto tiene su entorno en /tmp/entornos, fuera de la carpeta Git.
+# Dentro de un proyecto, su entorno va en /tmp/entornos, fuera de la carpeta Git.
+# Fuera de un proyecto, uv funciona como siempre.
 uv() {
     local raiz="$PWD"
     while [ "$raiz" != "/" ] && [ ! -f "$raiz/pyproject.toml" ]; do
         raiz=$(dirname "$raiz")
     done
-    UV_PROJECT_ENVIRONMENT="/tmp/entornos/$(basename "$raiz")" command uv "$@"
+    if [ -f "$raiz/pyproject.toml" ]; then
+        UV_PROJECT_ENVIRONMENT="/tmp/entornos/$(basename "$raiz")" command uv "$@"
+    else
+        command uv "$@"
+    fi
 }
 BLOQUE
 
-# Si ya había un bloque del taller, se reemplaza; lo demás del archivo no se toca.
-if [ -f "$destino" ]; then
-    python3 - "$destino" "$inicio" "$fin" <<'PY'
+    # Si ya había un bloque del taller, se reemplaza; lo demás del archivo no se toca.
+    if [ -f "$destino" ]; then
+        python3 - "$destino" "$inicio" "$fin" <<'PY' || return 1
 import sys
 
 ruta, inicio, fin = sys.argv[1:]
@@ -63,8 +83,15 @@ for linea in lineas:
 with open(ruta, "w") as archivo:
     archivo.write("\n".join(fuera) + ("\n" if fuera else ""))
 PY
-fi
+    fi
 
-printf '%s\n%s\n%s\n' "$inicio" "$bloque" "$fin" >> "$destino"
-echo "Listo: $destino"
-echo "Cierra esta terminal (la X del panel) y abre una nueva para que tome los cambios."
+    printf '%s\n%s\n%s\n' "$inicio" "$bloque" "$fin" >> "$destino" || return 1
+
+    # Y se carga ya, en esta terminal.
+    # shellcheck source=/dev/null
+    source "$destino"
+    echo "Listo: la terminal está preparada, esta y las que abras desde ahora."
+}
+
+_preparar_terminal
+unset -f _preparar_terminal

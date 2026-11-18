@@ -18,25 +18,26 @@ correrlo; con *Pull* recibes las actualizaciones.
 | `pyproject.toml` | Nombre del paquete, dependencias y configuración de las herramientas |
 | `uv.lock` | Las versiones exactas de todo lo que se instala |
 | `project_config.yml` | Lo que esperamos que cambie: catálogos, hiperparámetros, columnas |
-| `herramientas/preparar-terminal.sh` | Prepara la terminal web de Databricks para usar uv. Se corre una sola vez |
+| `herramientas/preparar-terminal.sh` | Prepara la terminal web de Databricks para usar uv. Se corre una sola vez, con `source` |
 | `.github/workflows/revision.yml` | La revisión automática: pruebas y ruff en cada pull request |
 | `.pre-commit-config.yaml` | Las revisiones antes de cada commit, para quien trabaja en una PC |
 | `.devcontainer/` | La receta de un Codespace (Python 3.12 y uv), por si se habilita |
 
 ## En Databricks Free Edition: la terminal web
 
-Abre cualquier notebook, conéctalo a *Serverless* y pulsa el ícono de terminal (al pie de la barra derecha).
-La primera vez, prepárala:
+Abre un notebook de este repositorio (por ejemplo, `notebooks/revisar`), conéctalo a *Serverless* y pulsa el
+ícono de terminal (al pie de la barra derecha). La terminal se abre en la carpeta de ese notebook. La primera vez,
+sube a la raíz del repositorio y prepárala, con `source` (no con `bash`):
 
 ```bash
-cd /Workspace/Users/<tu-correo>/taller-paquete
-bash herramientas/preparar-terminal.sh
+cd ..
+source herramientas/preparar-terminal.sh
 ```
 
-Cierra la terminal y abre una nueva. Desde entonces, en cada sesión:
+Queda lista esa terminal y todas las que abras después. Desde entonces, en cada sesión:
 
 ```bash
-cd /Workspace/Users/<tu-correo>/taller-paquete
+cd ..                        # de notebooks/ a la raíz del repositorio
 uv sync --extra dev          # crea el entorno con las versiones de uv.lock
 uv run pytest                # corre las pruebas
 uv run ruff check .          # el guardia: reglas
