@@ -21,7 +21,6 @@ correrlo; con *Pull* recibes las actualizaciones.
 | `herramientas/preparar-terminal.sh` | Prepara la terminal web de Databricks para usar uv. Se corre una sola vez, con `source` |
 | `.github/workflows/revision.yml` | La revisión automática: pruebas y ruff en cada pull request |
 | `.pre-commit-config.yaml` | Las revisiones antes de cada commit, para quien trabaja en una PC |
-| `.devcontainer/` | La receta de un Codespace (Python 3.12 y uv), por si se habilita |
 
 ## En Databricks Free Edition: la terminal web
 
@@ -46,7 +45,7 @@ uv run ruff format .         # el guardia: formato
 
 Sin terminal, `notebooks/revisar` hace lo mismo: córrelo completo (*Run all*).
 
-## En una PC o un Codespace
+## En una PC
 
 ```bash
 uv sync --extra dev          # crea el entorno e instala todo
