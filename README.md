@@ -19,6 +19,7 @@ correrlo; con *Pull* recibes las actualizaciones.
 | `project_config.yml` | Lo que esperamos que cambie: catálogos, hiperparámetros, columnas |
 | `herramientas/preparar-terminal.sh` | Prepara la terminal web de Databricks para usar uv. Se corre una sola vez, con `source` |
 | `.github/workflows/revision.yml` | La revisión automática: pruebas y ruff en cada pull request |
+| `.github/CODEOWNERS` | Quién debe aprobar un pull request para que entre a `main` |
 | `.pre-commit-config.yaml` | Las revisiones antes de cada commit, para quien trabaja en una PC |
 
 ## En Databricks Free Edition: la terminal web
