@@ -5,11 +5,16 @@ from pydantic import BaseModel, Field
 
 
 class Parameters(BaseModel):
-    """Hiperparámetros del modelo, con rangos válidos."""
+    """Hiperparámetros elegidos para el entrenamiento oficial.
 
-    learning_rate: float = Field(gt=0, le=0.2)
-    n_estimators: int = Field(ge=10, le=10000)
-    max_depth: int = Field(ge=1, le=50)
+    Solo se rechazan valores imposibles. A diferencia del libro, no ponemos topes
+    "razonables" (como learning_rate <= 0.2): son una opinión y estorban al explorar.
+    Los hiperparámetros se exploran en un notebook; aquí van los que se eligieron.
+    """
+
+    learning_rate: float = Field(gt=0)  # con 0, el modelo no aprende
+    n_estimators: int = Field(ge=1)  # al menos un árbol
+    max_depth: int  # sin regla: en LightGBM, -1 significa "sin límite"
 
 
 class ProjectConfig(BaseModel):
