@@ -12,7 +12,6 @@ correrlo; con *Pull* recibes las actualizaciones.
 | Archivo o carpeta | Para qué sirve |
 |---|---|
 | `notebooks/preprocesamiento.py` | El "antes": todo el preprocesamiento en un notebook |
-| `notebooks/revisar.py` | Instala el paquete, corre las pruebas y pasa ruff. Córrelo antes de cada commit |
 | `src/hotel_booking/` | El "después": el código como paquete de Python |
 | `tests/` | Las pruebas, que se corren con pytest |
 | `pyproject.toml` | Nombre del paquete, dependencias y configuración de las herramientas |
@@ -24,7 +23,7 @@ correrlo; con *Pull* recibes las actualizaciones.
 
 ## En Databricks Free Edition: la terminal web
 
-Abre un notebook de este repositorio (por ejemplo, `notebooks/revisar`), conéctalo a *Serverless* y pulsa el
+Abre un notebook de este repositorio (por ejemplo, `notebooks/preprocesamiento`), conéctalo a *Serverless* y pulsa el
 ícono de terminal (al pie de la barra derecha). La terminal se abre en la carpeta de ese notebook. La primera vez,
 sube a la raíz del repositorio y prepárala, con `source` (no con `bash`):
 
@@ -42,8 +41,6 @@ uv run pytest                # corre las pruebas
 uv run ruff check .          # el guardia: reglas
 uv run ruff format .         # el guardia: formato
 ```
-
-Sin terminal, `notebooks/revisar` hace lo mismo: córrelo completo (*Run all*).
 
 ## En una PC
 

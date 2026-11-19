@@ -1,6 +1,6 @@
 # Revisión automática: corre en cada pull request.
-# Hace lo mismo que el notebook revisar.py, pero en una máquina de GitHub,
-# así que nadie puede saltársela. En T09 la convertimos en CI/CD completo.
+# Corre las mismas pruebas y el mismo guardia que la terminal, pero en una
+# máquina de GitHub, así que nadie puede saltársela. En T09 la convertimos en CI/CD completo.
 name: Revisión automática
 
 on:
