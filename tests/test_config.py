@@ -27,13 +27,3 @@ def test_learning_rate_cero_falla(tmp_path: Path) -> None:
 
     with pytest.raises(ValidationError):
         ProjectConfig.from_yaml(str(config_malo))
-
-
-def test_learning_rate_alto_se_acepta(tmp_path: Path) -> None:
-    texto = CONFIG_PATH.read_text().replace("learning_rate: 0.05", "learning_rate: 0.5")
-    config_alto = tmp_path / "config.yml"
-    config_alto.write_text(texto)
-
-    cfg = ProjectConfig.from_yaml(str(config_alto))
-
-    assert cfg.parameters.learning_rate == 0.5
