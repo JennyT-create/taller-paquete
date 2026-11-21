@@ -17,23 +17,19 @@ correrlo; con *Pull* recibes las actualizaciones.
 | `pyproject.toml` | Nombre del paquete, dependencias y configuración de las herramientas |
 | `uv.lock` | Las versiones exactas de todo lo que se instala |
 | `project_config.yml` | Lo que esperamos que cambie: catálogos, hiperparámetros, columnas |
-| `herramientas/preparar-terminal.sh` | Prepara la terminal web de Databricks para usar uv. Se corre una sola vez, con `source` |
 | `.github/workflows/revision.yml` | La revisión automática: pruebas y ruff en cada pull request |
 | `.github/CODEOWNERS` | Quién debe aprobar un pull request para que entre a `main` |
 | `.pre-commit-config.yaml` | Las revisiones antes de cada commit, para quien trabaja en una PC |
 
 ## En Databricks Free Edition: la terminal web
 
-Abre un notebook de este repositorio (por ejemplo, `notebooks/preprocesamiento`), conéctalo a *Serverless* y pulsa el
-ícono de terminal (al pie de la barra derecha). La terminal se abre en la carpeta de ese notebook. La primera vez,
-sube a la raíz del repositorio y prepárala, con `source` (no con `bash`):
+**La primera vez, prepara la terminal** con el repositorio
+[`chapter-aa/herramientas`](https://github.com/chapter-aa/herramientas): clónalo en tu carpeta de usuario, junto a
+este, y sigue su README. Se hace una sola vez y sirve para todos los proyectos.
 
-```bash
-cd ..
-source herramientas/preparar-terminal.sh
-```
-
-Queda lista esa terminal y todas las que abras después. Desde entonces, en cada sesión:
+Después, abre un notebook de este repositorio (por ejemplo, `notebooks/preprocesamiento`), conéctalo a *Serverless*
+y pulsa el ícono de terminal (al pie de la barra derecha). La terminal se abre en la carpeta de ese notebook. En cada
+sesión:
 
 ```bash
 cd ..                        # de notebooks/ a la raíz del repositorio
