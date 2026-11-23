@@ -9,6 +9,8 @@
 # MAGIC Así se ve un notebook típico de experimentación: todo junto, valores
 # MAGIC escritos a mano y nada que se pueda probar por separado. En T03 llevamos
 # MAGIC este código al paquete `hotel_booking`, paso a paso.
+# MAGIC
+# MAGIC Antes de correrlo, corre una vez el notebook `cargar-datos`: deja los datos en tu catálogo.
 
 # COMMAND ----------
 
@@ -25,7 +27,7 @@ TARGET = "average_price"
 
 # COMMAND ----------
 
-df = pd.read_csv("../data/booking.csv")
+df = pd.read_csv(f"/Volumes/{CATALOG}/{SCHEMA}/datos/booking.csv")
 
 # Nombres de columna sin espacios ni guiones (ya está en el paquete: clean_column_names)
 df.columns = df.columns.str.replace(r"[ -]", "_", regex=True)

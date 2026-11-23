@@ -11,6 +11,7 @@ correrlo; con *Pull* recibes las actualizaciones.
 
 | Archivo o carpeta | Para qué sirve |
 |---|---|
+| `notebooks/cargar-datos.py` | Baja los datos al catálogo de Databricks y muestra cómo son. Se corre una vez |
 | `notebooks/preprocesamiento.py` | El "antes": todo el preprocesamiento en un notebook |
 | `src/hotel_booking/` | El "después": el código como paquete de Python |
 | `tests/` | Las pruebas, que se corren con pytest |
@@ -47,4 +48,8 @@ uv run pre-commit install    # activa las revisiones antes de cada commit
 uv run pytest                # corre las pruebas
 ```
 
-Datos: el dataset público *Hotel Booking* del libro *MLOps with Databricks*. No se guarda en este repositorio.
+## Los datos
+
+El dataset público *Hotel Booking* del libro *MLOps with Databricks*. No se guarda en este repositorio: los datos
+no van a Git. En Databricks, corre una vez el notebook `notebooks/cargar-datos` (en *Serverless*, *Run all*): lo
+baja del repositorio del libro a `/Volumes/mlops_dev/hotel_booking/datos/booking.csv`.
